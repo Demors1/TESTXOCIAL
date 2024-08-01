@@ -2,12 +2,6 @@
 <html lang="es">
 <head
     <script defer type="module" src="https://embeddables.p.mbirdcdn.net/v1/web-components.es.js"></script>
-<script>
-  const workspaceId = "1b74200c-7199-4b87-b0a1-7c238585f023"
-  window.mbembeds = window.mbembeds || [];
-  function mbinit(){mbembeds.push(arguments);}
-  mbinit(workspaceId);
-</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página con imagen de fondo</title>
@@ -24,6 +18,13 @@
         }
     </style>
 
+<script defer type="module" src="https://embeddables.p.mbirdcdn.net/v1/web-components.es.js"></script>
+<script>
+  const workspaceId = "1b74200c-7199-4b87-b0a1-7c238585f023"
+  window.mbembeds = window.mbembeds || [];
+  function mbinit(){mbembeds.push(arguments);}
+  mbinit(workspaceId);
+</script>
 <!--  CHATBOT   
 <script>  var MessageBirdChatWidgetSettings = {     widgetId: '48a49fda-6320-406a-92f6-59b3b37c3978',     initializeOnLoad: true,   };  !function(){"use strict";if(Boolean(document.getElementById("live-chat-widget-script")))console.error("MessageBirdChatWidget: Snippet loaded twice on page");else{var e,t;window.MessageBirdChatWidget={},window.MessageBirdChatWidget.queue=[];for(var i=["init","setConfig","toggleChat","identify","hide","on","shutdown"],n=function(){var e=i[d];window.MessageBirdChatWidget[e]=function(){for(var t=arguments.length,i=new Array(t),n=0;n<t;n++)i[n]=arguments[n];window.MessageBirdChatWidget.queue.push([[e,i]])}},d=0;d<i.length;d++)n();var a=(null===(e=window)||void 0===e||null===(t=e.MessageBirdChatWidgetSettings)||void 0===t?void 0:t.widgetId)||"",o=function(){var e,t=document.createElement("script");t.type="text/javascript",t.src="https://livechat.messagebird.com/bootstrap.js?widgetId=".concat(a),t.async=!0,t.id="live-chat-widget-script";var i=document.getElementsByTagName("script")[0];null==i||null===(e=i.parentNode)||void 0===e||e.insertBefore(t,i)};"complete"===document.readyState?o():window.attachEvent?window.attachEvent("onload",o):window.addEventListener("load", o, !1) } }(); window.MessageBirdChatWidget.on('ready', () => { window.MessageBirdChatWidget.logout() })</script>
  CHATBOT   -->

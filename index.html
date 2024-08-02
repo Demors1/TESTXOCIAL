@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página con Fondo de Imagen</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('https://static.wixstatic.com/media/384c68_eeb3998fce4b48a38d0cc3c55a853d6e~mv2.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-image 1s ease-in-out; /* Agrega una transición */
+        }
+        .button-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+    </style>
+    <script defer type="module" src="https://embeddables.p.mbirdcdn.net/v1/web-components.es.js"></script>
+    <script>
+        const workspaceId = "1b74200c-7199-4b87-b0a1-7c238585f023";
+        window.mbembeds = window.mbembeds || [];
+        function mbinit() { mbembeds.push(arguments); }
+        mbinit(workspaceId);
+    </script>
+</head>
+<body>
+    <div class="button-container">
+        <button onclick="changeBackground()">Cambiar Fondo</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

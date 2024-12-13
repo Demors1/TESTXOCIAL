@@ -20,22 +20,17 @@
 </head>
 
 
-<!--  CHATBOT   -->
-<script>  var MessageBirdChatWidgetSettings = {     widgetId: '63e17c03-5f04-4ef1-a25c-0683baa76ac7',     initializeOnLoad: true,   };  !function(){"use strict";if(Boolean(document.getElementById("live-chat-widget-script")))console.error("MessageBirdChatWidget: Snippet loaded twice on page");else{var e,t;window.MessageBirdChatWidget={},window.MessageBirdChatWidget.queue=[];for(var i=["init","setConfig","toggleChat","identify","hide","on","shutdown"],n=function(){var e=i[d];window.MessageBirdChatWidget[e]=function(){for(var t=arguments.length,i=new Array(t),n=0;n<t;n++)i[n]=arguments[n];window.MessageBirdChatWidget.queue.push([[e,i]])}},d=0;d<i.length;d++)n();var a=(null===(e=window)||void 0===e||null===(t=e.MessageBirdChatWidgetSettings)||void 0===t?void 0:t.widgetId)||"",o=function(){var e,t=document.createElement("script");t.type="text/javascript",t.src="https://livechat.messagebird.com/bootstrap.js?widgetId=".concat(a),t.async=!0,t.id="live-chat-widget-script";var i=document.getElementsByTagName("script")[0];null==i||null===(e=i.parentNode)||void 0===e||e.insertBefore(t,i)};"complete"===document.readyState?o():window.attachEvent?window.attachEvent("onload",o):window.addEventListener("load", o, !1) } }(); window.MessageBirdChatWidget.on('ready', () => { window.MessageBirdChatWidget.logout() })</script>
-<!--  CHATBOT   -->
-
-
 <body>
-    <script>
-        F9.Chat.Wrapper.init({
-          cdn: 'prod',
-          useBusinessHours: false,
-          languages: {"enabled":false,"backgroundColor":"#ff00d9"},
-          l10n: {"en":{"messenger":{"customText":{}},"systemMessages":{"transferredToParticipant":"The chat has been transferred to {name}.","transferredToGroup":"That chat has been transferred to group {group}.","conversationTerminated":"ENDe"},"captureFields":[{"k":"name","l":"Name","p":"Enter your name..."},{"k":"email","l":"Email Address","p":"Enter your email..."},{"k":"Question","l":"Question","p":"What can we help you with today?"}]}},
-          prepopulatedFields: [{"k":"campaign","v":"Kolivera"}],
-          messenger: {"integrationId":"6418846eb0b94801156612ea","soundNotificationEnabled":true,"transcriptPrintingEnabled":false,"menuItems":{"imageUpload":true,"fileUpload":true,"shareLocation":true},"embedded":true,"setViewportScale":false,"containerId":"bb029acad788f5d240f827a9a285c8ecc0b647634189e30e2a37d2536ebdfa8b","browserStorage":"sessionStorage","hideWidgetAfterBusinessHours":false,"scheduleCallback":{"isCallbackEnabled":false,"requestCallbackList":"","customConfirmationMessage":"We will call you as soon as we can at [PHONE]","web2CampaignAPIHost":""},"fixedHeader":false,"buttonIconUrl":"https://demors1.github.io/TESTXOCIAL/CHIT","backgroundImageUrl":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuTzX3Kll43auLRFvXuNrNiXKcOdfSbXrQrg&s","customColors":{"brandColor":"ff00d9","conversationColor":"0099ff","actionColor":"0099ff"},"carouselType":"stacked"},
-          clearMessagesTimeout: 3
-        });
-        </script>
+   <script>
+  F9.Chat.Wrapper.init({
+    cdn: 'prod',
+    useBusinessHours: false,
+    languages: {"enabled":false,"backgroundColor":"#65758e"},
+    l10n: {"en":{"messenger":{"customText":{}},"systemMessages":{"transferredToParticipant":"The chat has been transferred to {name}.","transferredToGroup":"That chat has been transferred to group {group}."},"captureFields":[{"k":"name","l":"Name","p":"Enter your name..."},{"k":"email","l":"Email Address","p":"Enter your email..."},{"k":"Question","l":"Question","p":"What can we help you with today?"}]}},
+    prepopulatedFields: [{"k":"campaign","v":"Demos"}],
+    messenger: {"integrationId":"6418846eb0b94801156612ea","soundNotificationEnabled":true,"transcriptPrintingEnabled":false,"menuItems":{"imageUpload":true,"fileUpload":true,"shareLocation":true},"embedded":false,"setViewportScale":false,"browserStorage":"sessionStorage","hideWidgetAfterBusinessHours":false,"scheduleCallback":{"isCallbackEnabled":false,"requestCallbackList":"","customConfirmationMessage":"We will call you as soon as we can at [PHONE]","web2CampaignAPIHost":""},"fixedHeader":false,"displayStyle":"button","buttonIconUrl":"CLIR","backgroundImageUrl":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAs5WVvY0zN2-4RnevZ3H_553xB0ltuYrrag&s","customColors":{"brandColor":"65758e","conversationColor":"0099ff","actionColor":"0099ff"},"carouselType":"default"},
+    clearMessagesTimeout: 3
+  });
+  </script>
 </body>
 </html>

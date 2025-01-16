@@ -23,15 +23,16 @@
 
 <body>
    <script>
-	F9.Chat.Wrapper.init({
-	  cdn: 'prod',
-	  useBusinessHours: false,
-	  languages: {"enabled":false,"backgroundColor":"#65758e"},
-	  l10n: {"en":{"messenger":{"customText":{}},"systemMessages":{"transferredToParticipant":"The chat has been transferred to {name}.","transferredToGroup":"That chat has been transferred to group {group}."}}},
-	  prepopulatedFields: [{"k":"campaign","v":"Demos"},{"k":"Question","v":"a"}],
-	  messenger: {"integrationId":"6418846eb0b94801156612ea","soundNotificationEnabled":true,"transcriptPrintingEnabled":false,"menuItems":{"imageUpload":true,"fileUpload":true,"shareLocation":true},"embedded":true,"setViewportScale":false,"businessName":"chatmin","browserStorage":"sessionStorage","hideWidgetAfterBusinessHours":false,"scheduleCallback":{"isCallbackEnabled":false,"requestCallbackList":"","customConfirmationMessage":"We will call you as soon as we can at [PHONE]","web2CampaignAPIHost":""},"fixedHeader":false,"displayStyle":"button","customColors":{"brandColor":"65758e","conversationColor":"0099ff","actionColor":"0099ff"}},
-	  clearMessagesTimeout: 3
-	});
-	</script>
+  F9.Chat.Wrapper.init({
+    cdn: 'prod',
+    useBusinessHours: true,
+    languages: {"enabled":false,"backgroundColor":"#65758e"},
+    l10n: {"en":{"messenger":{"customText":{"startNewChat":"start"}},"systemMessages":{"conversationCreated":"gracias por llamar","participantAccepted":"you","participantJoined":"a","participantLeft":"b","transferredToParticipant":"The chac has been transferred to {name}.","transferredToGroup":"That cdhat has been transferred to group {group}.","conversationTerminated":"d"},"captureFields": [] }},
+    prepopulatedFields: [{"k":"campaign","v":"Demos"},{"k":"name","v":"g"}],
+    messenger: {"integrationId":"6418846eb0b94801156612ea","soundNotificationEnabled":true,"transcriptPrintingEnabled":true,"menuItems":{"imageUpload":true,"fileUpload":true,"shareLocation":true},"embedded":true,"setViewportScale":true,"containerId":"chatWidgetContainer","businessName":"chatmin","browserStorage":"localStorage","hideWidgetAfterBusinessHours":false,"scheduleCallback":{"isCallbackEnabled":false,"requestCallbackList":"","customConfirmationMessage":"We will call you as soon as we can at [PHONE]","web2CampaignAPIHost":""},"fixedHeader":false,"customColors":{"brandColor":"65758e","conversationColor":"0099ff","actionColor":"0099ff"},"carouselType":"stacked"},
+    clearMessagesTimeout: 3
+  });
+</script>
+
 </body>
 </html>

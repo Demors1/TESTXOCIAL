@@ -19,39 +19,50 @@
             width: 90%;
             max-width: 1000px;
             background: white;
-            padding: 40px 20px;
+            padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            display: flex;
+            justify-content: space-between;
         }
-        .pacientes-grid {
+        .section {
+            width: 48%;
+        }
+        .pacientes-grid, .agenda-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 20px;
             margin-top: 20px;
         }
-        .paciente {
+        .paciente, .agenda-item {
             padding: 15px;
             border: 1px solid #ddd;
             border-radius: 5px;
             background-color: #fafafa;
             text-align: left;
         }
-        .paciente h2 {
+        .paciente h2, .agenda-item h2 {
             margin: 0 0 10px;
             color: #333;
             font-size: 1.2em;
         }
-        .paciente p {
+        .paciente p, .agenda-item p {
             margin: 5px 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Lista de Pacientes</h1>
-        <div id="pacientes" class="pacientes-grid"></div>
-        <p id="error-message" style="color: red;"></p>
+        <div class="section">
+            <h1>Lista de Pacientes</h1>
+            <div id="pacientes" class="pacientes-grid"></div>
+            <p id="error-message" style="color: red;"></p>
+        </div>
+        <div class="section">
+            <h1>Agenda</h1>
+            <div id="agenda" class="agenda-grid"></div>
+        </div>
     </div>
 
     <script>
@@ -64,7 +75,7 @@
                         'Content-Type': 'application/json'
                     }
                 });
-
+                
                 if (!response.ok) {
                     throw new Error(`Error HTTP! Estado: ${response.status}`);
                 }
@@ -72,6 +83,7 @@
                 const data = await response.json();
                 console.log("Datos recibidos:", data);
                 mostrarPacientes(data);
+                mostrarAgenda(data);
             } catch (error) {
                 console.error("Error al obtener los datos:", error);
                 document.getElementById("error-message").textContent = "No se pudieron obtener los datos. Verifica la API o la conexión.";
@@ -81,34 +93,63 @@
         function mostrarPacientes(data) {
             const pacientesDiv = document.getElementById("pacientes");
             pacientesDiv.innerHTML = "";
-
+            
             if (!data.items || data.items.length === 0) {
                 pacientesDiv.innerHTML = "<p>No hay datos disponibles.</p>";
                 return;
             }
 
             data.items.forEach(item => {
-                // Validar que la key sea solo números
                 if (!/^\d+$/.test(item.key)) {
-                    return; // Si la key contiene algo que no sea números, la ignoramos
+                    return;
                 }
-
+                
                 const pacienteDiv = document.createElement("div");
                 pacienteDiv.classList.add("paciente");
-
+                
                 const keyElement = document.createElement("h2");
                 keyElement.textContent = item.key;
-
+                
                 const valueElement = document.createElement("p");
                 valueElement.innerHTML = item.value.replace(/\n/g, '<br>');
-
+                
                 pacienteDiv.appendChild(keyElement);
                 pacienteDiv.appendChild(valueElement);
                 pacientesDiv.appendChild(pacienteDiv);
             });
         }
 
+        function mostrarAgenda(data) {
+            const agendaDiv = document.getElementById("agenda");
+            agendaDiv.innerHTML = "";
+            
+            if (!data.items || data.items.length === 0) {
+                agendaDiv.innerHTML = "<p>No hay citas disponibles.</p>";
+                return;
+            }
+
+            data.items.forEach(item => {
+                if (!/^\d+$/.test(item.key)) {
+                    return;
+                }
+                
+                const agendaItemDiv = document.createElement("div");
+                agendaItemDiv.classList.add("agenda-item");
+                
+                const keyElement = document.createElement("h2");
+                keyElement.textContent = `Cita ${item.key}`;
+                
+                const valueElement = document.createElement("p");
+                valueElement.innerHTML = `Fecha y Hora: ${item.value.replace(/\n/g, '<br>')}`;
+                
+                agendaItemDiv.appendChild(keyElement);
+                agendaItemDiv.appendChild(valueElement);
+                agendaDiv.appendChild(agendaItemDiv);
+            });
+        }
+        
         fetchPacientes();
     </script>
 </body>
 </html>
+

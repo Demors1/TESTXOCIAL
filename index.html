@@ -19,7 +19,7 @@
             width: 90%;
             max-width: 1000px;
             background: white;
-            padding: 20px;
+            padding: 40px 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
@@ -64,7 +64,7 @@
                         'Content-Type': 'application/json'
                     }
                 });
-                
+
                 if (!response.ok) {
                     throw new Error(`Error HTTP! Estado: ${response.status}`);
                 }
@@ -81,28 +81,33 @@
         function mostrarPacientes(data) {
             const pacientesDiv = document.getElementById("pacientes");
             pacientesDiv.innerHTML = "";
-            
+
             if (!data.items || data.items.length === 0) {
                 pacientesDiv.innerHTML = "<p>No hay datos disponibles.</p>";
                 return;
             }
 
             data.items.forEach(item => {
+                // Validar que la key sea solo números
+                if (!/^\d+$/.test(item.key)) {
+                    return; // Si la key contiene algo que no sea números, la ignoramos
+                }
+
                 const pacienteDiv = document.createElement("div");
                 pacienteDiv.classList.add("paciente");
-                
+
                 const keyElement = document.createElement("h2");
                 keyElement.textContent = item.key;
-                
+
                 const valueElement = document.createElement("p");
                 valueElement.innerHTML = item.value.replace(/\n/g, '<br>');
-                
+
                 pacienteDiv.appendChild(keyElement);
                 pacienteDiv.appendChild(valueElement);
                 pacientesDiv.appendChild(pacienteDiv);
             });
         }
-        
+
         fetchPacientes();
     </script>
 </body>

@@ -1,57 +1,132 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta de Pacientes</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-image: url('https://static.wixstatic.com/media/384c68_ef710a247a18462d9ed1829e34d57d7e~mv2.png');
-            background-size: cover;
-            background-position: center;
-        }
-        .container {
-            width: 90%;
-            max-width: 1000px;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            display: flex;
-            justify-content: space-between;
-        }
-        .section {
-            width: 48%;
-        }
-        .pacientes-grid, .agenda-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .paciente, .agenda-item {
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #fafafa;
-            text-align: left;
-        }
-        .paciente h2, .agenda-item h2 {
-            margin: 0 0 10px;
-            color: #333;
-            font-size: 1.2em;
-        }
-        .paciente p, .agenda-item p {
-            margin: 5px 0;
-        }
-    </style>
-</head>
-<script>  var MessageBirdChatWidgetSettings = {     widgetId: 'cd06d27d-f0a1-41c9-9c6e-8efc3e402bf4',     initializeOnLoad: true,   };  !function(){"use strict";if(Boolean(document.getElementById("live-chat-widget-script")))console.error("MessageBirdChatWidget: Snippet loaded twice on page");else{var e,t;window.MessageBirdChatWidget={},window.MessageBirdChatWidget.queue=[];for(var i=["init","setConfig","toggleChat","identify","hide","on","shutdown"],n=function(){var e=i[d];window.MessageBirdChatWidget[e]=function(){for(var t=arguments.length,i=new Array(t),n=0;n<t;n++)i[n]=arguments[n];window.MessageBirdChatWidget.queue.push([[e,i]])}},d=0;d<i.length;d++)n();var a=(null===(e=window)||void 0===e||null===(t=e.MessageBirdChatWidgetSettings)||void 0===t?void 0:t.widgetId)||"",o=function(){var e,t=document.createElement("script");t.type="text/javascript",t.src="https://livechat.messagebird.com/bootstrap.js?widgetId=".concat(a),t.async=!0,t.id="live-chat-widget-script";var i=document.getElementsByTagName("script")[0];null==i||null===(e=i.parentNode)||void 0===e||e.insertBefore(t,i)};"complete"===document.readyState?o():window.attachEvent?window.attachEvent("onload",o):window.addEventListener("load",o,!1)}}();</script>
-</html>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Consulta de Pacientes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-image: url('https://static.wixstatic.com/media/384c68_ecf0cf86abc943f69b6b3b89afe17428~mv2.png');
+      background-size: cover;
+      background-position: center;
+    }
 
+    .container {
+      width: 90%;
+      max-width: 1000px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .section {
+      width: 48%;
+    }
+
+    .pacientes-grid, .agenda-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .paciente, .agenda-item {
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #fafafa;
+      text-align: left;
+    }
+
+    .paciente h2, .agenda-item h2 {
+      margin: 0 0 10px;
+      color: #333;
+      font-size: 1.2em;
+    }
+
+    .paciente p, .agenda-item p {
+      margin: 5px 0;
+    }
+
+    /* Estilos del popup */
+    .popup-publicidad {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    .popup-publicidad img {
+      max-width: 90vw;
+      max-height: 90vh;
+      height: auto;
+      width: auto;
+      display: block;
+      border-radius: 10px;
+    }
+
+    .popup-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Popup Publicitario -->
+  <div class="popup-publicidad" id="popupPublicidad">
+    <span class="popup-close" onclick="document.getElementById('popupPublicidad').style.display='none'">&times;</span>
+    <a href="http://m.me/profile.php?id=100092576277131" target="_blank">
+      <img src="https://static.wixstatic.com/media/384c68_1e2df4e2c72d4ae5b240e78226b71051~mv2.png" alt="Publicidad">
+    </a>
+  </div>
+
+  <script>
+    // Mostrar el popup después de 4 segundos
+    window.onload = function() {
+      setTimeout(function() {
+        document.getElementById('popupPublicidad').style.display = 'block';
+      }, 4000);
+    };
+  </script>
+
+  <!-- Chat Widget de MessageBird -->
+  <script>
+    var MessageBirdChatWidgetSettings = {
+      widgetId: 'cd06d27d-f0a1-41c9-9c6e-8efc3e402bf4',
+      initializeOnLoad: true,
+    };
+    !function () {
+      "use strict";
+      if (document.getElementById("live-chat-widget-script")) return;
+      var s = document.createElement("script");
+      s.type = "text/javascript";
+      s.src = "https://livechat.messagebird.com/bootstrap.js?widgetId=" + MessageBirdChatWidgetSettings.widgetId;
+      s.async = true;
+      s.id = "live-chat-widget-script";
+      document.getElementsByTagName("head")[0].appendChild(s);
+    }();
+  </script>
+</body>
+</html>

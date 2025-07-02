@@ -1,13 +1,1228 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <!--  our web component script  -->
-    <script src="main.js" type="text/javascript" defer></script>
-	
-    <title>Widget K</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Demostraciones - AXD</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #d4af37;
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #d4af37;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+
+        .breadcrumb-item {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb-item:hover {
+            color: #d4af37;
+        }
+
+        .breadcrumb-separator {
+            color: #666;
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-top: 80px;
+            padding: 2rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title h1 {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #d4af37, #f4d03f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .page-title p {
+            font-size: 1.2rem;
+            color: #cccccc;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Grid Layout */
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* Cards */
+        .demo-card {
+            background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #d4af37, #f4d03f);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .demo-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .demo-card:hover {
+            transform: translateY(-5px);
+            border-color: #d4af37;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #d4af37;
+        }
+
+        .card-description {
+            color: #cccccc;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        /* Demo Detail View */
+        .demo-detail {
+            display: none;
+        }
+
+        .demo-detail.active {
+            display: block;
+        }
+
+        .back-button {
+            background: linear-gradient(45deg, #d4af37, #f4d03f);
+            color: #000;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Demo Cards in Detail View */
+        .demo-use-cases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .use-case-card {
+            background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+            border: 1px solid #333;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .use-case-card:hover {
+            border-color: #d4af37;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1);
+        }
+
+        .use-case-header {
+            background: linear-gradient(45deg, #d4af37, #f4d03f);
+            color: #000;
+            padding: 1.5rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .use-case-content {
+            padding: 2rem;
+        }
+
+        .demo-info {
+            margin-bottom: 2rem;
+        }
+
+        .demo-info h4 {
+            color: #d4af37;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .demo-info p, .demo-info a {
+            color: #cccccc;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-info a {
+            color: #d4af37;
+            text-decoration: none;
+        }
+
+        .demo-info a:hover {
+            text-decoration: underline;
+        }
+
+        .demo-steps {
+            margin-top: 1.5rem;
+        }
+
+        .demo-steps h4 {
+            color: #d4af37;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .step-list {
+            list-style: none;
+        }
+
+        .step-item {
+            background: rgba(212, 175, 55, 0.1);
+            margin-bottom: 0.8rem;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid #d4af37;
+            transition: all 0.3s ease;
+        }
+
+        .step-item:hover {
+            background: rgba(212, 175, 55, 0.2);
+            transform: translateX(5px);
+        }
+
+        .step-number {
+            color: #d4af37;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        /* Phone Numbers Table */
+        .phone-table {
+            background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .phone-table-header {
+            background: linear-gradient(45deg, #d4af37, #f4d03f);
+            color: #000;
+            padding: 1.5rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .phone-table-content {
+            padding: 2rem;
+        }
+
+        .phone-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .phone-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #d4af37;
+        }
+
+        .phone-vertical {
+            font-weight: bold;
+            color: #d4af37;
+        }
+
+        .phone-number {
+            color: #cccccc;
+            font-family: monospace;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+
+            .page-title h1 {
+                font-size: 2rem;
+            }
+
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-use-cases {
+                grid-template-columns: 1fr;
+            }
+
+            .phone-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            border-top-color: #d4af37;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Hide/Show Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
-<body style="background-color: black;">
-<!--  our custom tag  -->
-<axede-chat-box></axede-chat-box>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">AXD</div>
+            <nav class="nav-breadcrumb">
+                <span class="breadcrumb-item" onclick="goHome()">Inicio</span>
+                <span class="breadcrumb-separator" id="breadcrumb-content"></span>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        
+        <!-- Home View -->
+        <div id="home-view" class="view active">
+            <div class="page-title">
+                <h1>Plataforma de Demostraciones</h1>
+                <p>Selecciona una línea demostrativa para acceder a las herramientas y scripts especializados</p>
+            </div>
+
+            <div class="demo-grid">
+                <div class="demo-card" onclick="selectLine('experiencia')">
+                    <span class="card-icon">🎯</span>
+                    <h3 class="card-title">Línea de Experiencia</h3>
+                    <p class="card-description">Demostraciones de Customer Experience, Voicebots, Chatbots y Contact Center</p>
+                    <div class="card-stats">
+                        <span>2 Categorías</span>
+                        <span>RedSaphire • AXD</span>
+                    </div>
+                </div>
+
+                <div class="demo-card" onclick="selectLine('conectividad')">
+                    <span class="card-icon">🔗</span>
+                    <h3 class="card-title">Línea de Conectividad</h3>
+                    <p class="card-description">Soluciones de conexión, integración y comunicación empresarial</p>
+                    <div class="card-stats">
+                        <span>Próximamente</span>
+                        <span>En desarrollo</span>
+                    </div>
+                </div>
+
+                <div class="demo-card" onclick="selectLine('servicios')">
+                    <span class="card-icon">⚙️</span>
+                    <h3 class="card-title">Línea de Servicios</h3>
+                    <p class="card-description">Servicios adicionales y soluciones complementarias</p>
+                    <div class="card-stats">
+                        <span>Próximamente</span>
+                        <span>En desarrollo</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Experience Line View -->
+        <div id="experiencia-view" class="view">
+            <button class="back-button" onclick="goHome()">← Volver al Inicio</button>
+            
+            <div class="page-title">
+                <h1>Línea de Experiencia</h1>
+                <p>Selecciona la categoría de demostraciones que deseas explorar</p>
+            </div>
+
+            <div class="demo-grid">
+                <div class="demo-card" onclick="selectCategory('redsaphire')">
+                    <span class="card-icon">💎</span>
+                    <h3 class="card-title">RedSaphire</h3>
+                    <p class="card-description">Demostraciones estandarizadas con scripts detallados para múltiples casos de uso</p>
+                    <div class="card-stats">
+                        <span>5 Casos de Uso</span>
+                        <span>Voice & Chat</span>
+                    </div>
+                </div>
+
+                <div class="demo-card" onclick="selectCategory('axd')">
+                    <span class="card-icon">🚀</span>
+                    <h3 class="card-title">AXD</h3>
+                    <p class="card-description">Demostraciones personalizadas y soluciones innovadoras</p>
+                    <div class="card-stats">
+                        <span>Próximamente</span>
+                        <span>En desarrollo</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RedSaphire Detail View -->
+        <div id="redsaphire-view" class="view">
+            <button class="back-button" onclick="goToExperiencia()">← Volver a Experiencia</button>
+            
+            <div class="page-title">
+                <h1>Demostraciones RedSaphire</h1>
+                <p>Selecciona el tipo de demostración que deseas realizar</p>
+            </div>
+
+            <div class="demo-grid">
+                <div class="demo-card" onclick="selectRedSaphireCategory('voz')">
+                    <span class="card-icon">📞</span>
+                    <h3 class="card-title">Demostraciones por Voz</h3>
+                    <p class="card-description">Scripts detallados para demostraciones telefónicas con IVR y biometría vocal</p>
+                    <div class="card-stats">
+                        <span>5 Casos de Uso</span>
+                        <span>Voice & IVR</span>
+                    </div>
+                </div>
+
+                <div class="demo-card" onclick="selectRedSaphireCategory('chat')">
+                    <span class="card-icon">💬</span>
+                    <h3 class="card-title">Demostraciones por Chat</h3>
+                    <p class="card-description">Scripts para demostraciones digitales con chatbots y asistentes virtuales</p>
+                    <div class="card-stats">
+                        <span>Todos los Verticales</span>
+                        <span>Digital & AI</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RedSaphire Voice Detail View -->
+        <div id="redsaphire-voz-view" class="view">
+            <button class="back-button" onclick="goToRedSaphire()">← Volver a RedSaphire</button>
+            
+            <div class="page-title">
+                <h1>RedSaphire - Demostraciones por Voz</h1>
+                <p>Scripts detallados para demostraciones telefónicas organizados por casos de uso</p>
+            </div>
+
+            <div class="demo-use-cases">
+                <!-- Banking Use Case -->
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        🏦 Caso de Uso: Banca (Banking)
+                    </div>
+                    <div class="use-case-content">
+                        <div class="demo-info">
+                            <h4>📞 Teléfono Colombia:</h4>
+                            <p>+57 601 794 0595</p>
+                            
+                            <h4>🔗 URL de Demo:</h4>
+                            <a href="https://five9qp.com/qpx/rs-qpx-banking-spanish-us/" target="_blank">Acceder a la demo</a>
+                        </div>
+
+                        <div class="demo-steps">
+                            <h4>Pasos para la demostración:</h4>
+                            <ol class="step-list">
+                                <li class="step-item">
+                                    <span class="step-number">1.</span>
+                                    Llamar al número proporcionado
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">2.</span>
+                                    El IVA contesta. Decir: "Quiero consultar el saldo de mi cuenta"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">3.</span>
+                                    IVA pregunta qué tipo de cuenta. Responder: "Cuenta corriente"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">4.</span>
+                                    Decir frase biométrica: "Mi nombre es Kevin, y mi voz es mi contraseña" y presionar #
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">5.</span>
+                                    Solicitar: "Quiero hacer un pago" y presionar 1
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">6.</span>
+                                    Consultar horarios: "¿Cuáles son sus horarios?"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">7.</span>
+                                    Consultar dirección: "¿Cuál es su dirección?" y seguir el enlace SMS
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">8.</span>
+                                    Solicitar hablar con agente: "Quiero hablar con un representante"
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Healthcare Use Case -->
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        🏥 Caso de Uso: Salud (Healthcare)
+                    </div>
+                    <div class="use-case-content">
+                        <div class="demo-info">
+                            <h4>📞 Teléfono Colombia:</h4>
+                            <p>+57 601 514 2260</p>
+                            
+                            <h4>🔗 URL de Demo:</h4>
+                            <a href="https://five9qp.com/qpx/rs-qpx-apptschedule-spanish-us/" target="_blank">Acceder a la demo</a>
+                        </div>
+
+                        <div class="demo-steps">
+                            <h4>Pasos para la demostración:</h4>
+                            <ol class="step-list">
+                                <li class="step-item">
+                                    <span class="step-number">1.</span>
+                                    Llamar y decir: "Quiero agendar una cita"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">2.</span>
+                                    Confirmar identidad: "Sí, soy Kevin Olivera Caicedo"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">3.</span>
+                                    Decir frase biométrica + #
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">4.</span>
+                                    Indicar motivo: "Me duele el hombro"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">5.</span>
+                                    Elegir disponibilidad: "Tomo la segunda"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">6.</span>
+                                    Confirmar y recibir SMS/email
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">7.</span>
+                                    Solicitar renovación receta: "Quiero renovar una receta"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">8.</span>
+                                    Confirmar: "Sí, es la correcta"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">9.</span>
+                                    Pedir dirección: "¿Cuál es la dirección de su oficina?"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">10.</span>
+                                    Consultar horarios: "¿Cuáles son sus horarios?"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">11.</span>
+                                    Finalizar: "Quiero hablar con un agente"
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Retail Use Case -->
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        🏍 Caso de Uso: Retail (Estado de Pedido)
+                    </div>
+                    <div class="use-case-content">
+                        <div class="demo-info">
+                            <h4>📞 Teléfono Colombia:</h4>
+                            <p>+57 601 916 1514</p>
+                            
+                            <h4>🔗 URL de Demo:</h4>
+                            <a href="https://five9qp.com/qpx/rs-qpx-orderstatus-spanish-us/" target="_blank">Acceder a la demo</a>
+                        </div>
+
+                        <div class="demo-steps">
+                            <h4>Pasos para la demostración:</h4>
+                            <ol class="step-list">
+                                <li class="step-item">
+                                    <span class="step-number">1.</span>
+                                    Llamar y decir: "Quiero revisar el estado de mi pedido"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">2.</span>
+                                    Escuchar detalles del pedido
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">3.</span>
+                                    Solicitar: "Quiero el número de rastreo"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">4.</span>
+                                    Pedir hablar con agente: "Quiero hablar con un agente"
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Insurance Use Case -->
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        🏨 Caso de Uso: Seguros (Insurance)
+                    </div>
+                    <div class="use-case-content">
+                        <div class="demo-info">
+                            <h4>📞 Teléfono Colombia:</h4>
+                            <p>+57 601 915 6323</p>
+                            
+                            <h4>🔗 URL de Demo:</h4>
+                            <a href="https://five9qp.com/qpx/rs-qpx-insurance-spanish-us/" target="_blank">Acceder a la demo</a>
+                        </div>
+
+                        <div class="demo-steps">
+                            <h4>Pasos para la demostración:</h4>
+                            <ol class="step-list">
+                                <li class="step-item">
+                                    <span class="step-number">1.</span>
+                                    Llamar. IVA: "Gracias por llamar a Regressive Insurance..."
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">2.</span>
+                                    Confirmar: "Sí, correcto"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">3.</span>
+                                    Solicitar: "Quiero abrir un reclamo"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">4.</span>
+                                    Voz biométrica + #
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">5.</span>
+                                    IVA ofrece formulario visual por SMS. Decir "Sí" y completar:<br>
+                                    • Tipo de reclamo: Auto<br>
+                                    • Motivo: Colisión
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">6.</span>
+                                    Confirmar: "¿Estado de mi reclamo?" con el código 456789
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">7.</span>
+                                    Pedir hablar con agente: "Quiero hablar con un agente"
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IT Use Case -->
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        💻 Caso de Uso: IT (Reset de Contraseña)
+                    </div>
+                    <div class="use-case-content">
+                        <div class="demo-info">
+                            <h4>📞 Teléfono General:</h4>
+                            <p>925-217-7570</p>
+                            
+                            <h4>🔗 URL de Demo:</h4>
+                            <a href="https://five9qp.com/qpx/rs-qpx-passwordreset-spanish-us/" target="_blank">Acceder a la demo</a>
+                        </div>
+
+                        <div class="demo-steps">
+                            <h4>Pasos para la demostración:</h4>
+                            <ol class="step-list">
+                                <li class="step-item">
+                                    <span class="step-number">1.</span>
+                                    Llamar y decir: "Estoy bloqueado, quiero restablecer mi contraseña"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">2.</span>
+                                    Decir frase biométrica + #
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">3.</span>
+                                    Recibir código por SMS y dictarlo
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">4.</span>
+                                    Confirmar recepción de email de restablecimiento
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">5.</span>
+                                    Pedir hablar con agente
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phone Numbers Table -->
+            <div class="phone-table">
+                <div class="phone-table-header">
+                    📢 Números Colombia Exclusivos por Vertical
+                </div>
+                <div class="phone-table-content">
+                    <div class="phone-grid">
+                        <div class="phone-item">
+                            <span class="phone-vertical">Biometría Voz</span>
+                            <span class="phone-number">+57 601 794 4567</span>
+                        </div>
+                        <div class="phone-item">
+                            <span class="phone-vertical">Salud (Citas)</span>
+                            <span class="phone-number">+57 601 514 2260</span>
+                        </div>
+                        <div class="phone-item">
+                            <span class="phone-vertical">Banca</span>
+                            <span class="phone-number">+57 601 794 0595</span>
+                        </div>
+                        <div class="phone-item">
+                            <span class="phone-vertical">Seguros</span>
+                            <span class="phone-number">+57 601 915 6323</span>
+                        </div>
+                        <div class="phone-item">
+                            <span class="phone-vertical">Retail</span>
+                            <span class="phone-number">+57 601 916 1514</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RedSaphire Chat Detail View -->
+        <div id="redsaphire-chat-view" class="view">
+            <button class="back-button" onclick="goToRedSaphire()">← Volver a RedSaphire</button>
+            
+            <div class="page-title">
+                <h1>RedSaphire - Demostraciones por Chat</h1>
+                <p>Scripts para demostraciones digitales con chatbots y asistentes virtuales</p>
+            </div>
+
+            <div class="demo-use-cases">
+                <!-- Chat Demos Card -->
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        💬 Demostraciones por Chat - Todos los Verticales
+                    </div>
+                    <div class="use-case-content">
+                        <div class="demo-info">
+                            <h4>🌐 Verticales Disponibles:</h4>
+                            <p>• Salud (Healthcare)</p>
+                            <p>• Banca (Banking)</p>
+                            <p>• Retail (E-commerce)</p>
+                            <p>• Seguros (Insurance)</p>
+                            <p>• IT (Soporte Técnico)</p>
+                        </div>
+
+                        <div class="demo-steps">
+                            <h4>Pasos comunes para todos los verticales:</h4>
+                            <ol class="step-list">
+                                <li class="step-item">
+                                    <span class="step-number">1.</span>
+                                    Acceder al sitio demo correspondiente del vertical seleccionado
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">2.</span>
+                                    Iniciar chat con el asistente AI (Sara o Michael)
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">3.</span>
+                                    Realizar preguntas específicas como:<br>
+                                    • "¿Cuál es el estado de mi reclamo/pedido?"<br>
+                                    • "¿Cuál es su dirección?"<br>
+                                    • "¿Cuáles son sus horarios de atención?"<br>
+                                    • "Necesito ayuda con mi cuenta"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">4.</span>
+                                    Validar identidad cuando se solicite (código de autorización, número telefónico, email)
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">5.</span>
+                                    Solicitar hablar con agente humano: "Representante" o "Agente"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">6.</span>
+                                    El agente recibe la sesión en ADP y responde usando Assistance
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">7.</span>
+                                    Finalizar la conversación con una Disposition apropiada
+                                </li>
+                            </ol>
+                        </div>
+
+                        <div class="demo-info" style="margin-top: 2rem;">
+                            <h4>🔧 Funciones adicionales en canal digital:</h4>
+                            <p><strong>✉️ Email:</strong> El cliente llena un formulario de contacto, el agente responde directamente desde ADP</p>
+                            <p><strong>📲 SMS:</strong> Enviar mensajes desde "Compose SMS", el cliente puede responder y continuar la conversación</p>
+                            <p><strong>🔄 Transferencias:</strong> Demostrar transferencias fluidas entre bot y agente humano</p>
+                            <p><strong>📋 Historial:</strong> Mostrar cómo se mantiene el contexto de la conversación</p>
+                        </div>
+
+                        <div class="demo-steps" style="margin-top: 2rem;">
+                            <h4>💡 Tips para la demostración por chat:</h4>
+                            <ol class="step-list">
+                                <li class="step-item">
+                                    <span class="step-number">•</span>
+                                    Mostrar la velocidad de respuesta del chatbot
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">•</span>
+                                    Demostrar el reconocimiento de intenciones y entidades
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">•</span>
+                                    Destacar la integración con sistemas backend
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">•</span>
+                                    Mostrar la escalada inteligente a agentes humanos
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">•</span>
+                                    Demostrar capacidades multiidioma si están disponibles
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Specific Chat Use Cases by Vertical -->
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        🏥 Chat - Casos Específicos de Salud
+                    </div>
+                    <div class="use-case-content">
+                        <div class="demo-steps">
+                            <h4>Escenarios específicos para demostrar:</h4>
+                            <ol class="step-list">
+                                <li class="step-item">
+                                    <span class="step-number">1.</span>
+                                    <strong>Agendamiento de citas:</strong> "Quiero agendar una cita con el Dr. García"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">2.</span>
+                                    <strong>Consulta de resultados:</strong> "¿Están listos mis exámenes de laboratorio?"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">3.</span>
+                                    <strong>Renovación de recetas:</strong> "Necesito renovar mi receta de medicamento"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">4.</span>
+                                    <strong>Información general:</strong> "¿Cuáles son los horarios de la clínica?"
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        🏦 Chat - Casos Específicos de Banca
+                    </div>
+                    <div class="use-case-content">
+                        <div class="demo-steps">
+                            <h4>Escenarios específicos para demostrar:</h4>
+                            <ol class="step-list">
+                                <li class="step-item">
+                                    <span class="step-number">1.</span>
+                                    <strong>Consulta de saldo:</strong> "¿Cuál es el saldo de mi cuenta corriente?"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">2.</span>
+                                    <strong>Movimientos:</strong> "Quiero ver mis últimas transacciones"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">3.</span>
+                                    <strong>Transferencias:</strong> "Necesito hacer una transferencia"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">4.</span>
+                                    <strong>Bloqueo de tarjeta:</strong> "Perdí mi tarjeta de crédito"
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        🏍 Chat - Casos Específicos de Retail
+                    </div>
+                    <div class="use-case-content">
+                        <div class="demo-steps">
+                            <h4>Escenarios específicos para demostrar:</h4>
+                            <ol class="step-list">
+                                <li class="step-item">
+                                    <span class="step-number">1.</span>
+                                    <strong>Estado de pedido:</strong> "¿Dónde está mi pedido #12345?"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">2.</span>
+                                    <strong>Devoluciones:</strong> "Quiero devolver un producto"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">3.</span>
+                                    <strong>Información de producto:</strong> "¿Qué características tiene este producto?"
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">4.</span>
+                                    <strong>Ofertas y promociones:</strong> "¿Qué descuentos tienen disponibles?"
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <!-- AXD Detail View -->
+        <div id="axd-view" class="view">
+            <button class="back-button" onclick="goToExperiencia()">← Volver a Experiencia</button>
+            
+            <div class="page-title">
+                <h1>Demostraciones AXD</h1>
+                <p>Próximamente: Demostraciones personalizadas y soluciones innovadoras</p>
+            </div>
+
+            <div class="demo-use-cases">
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        🚧 En Desarrollo
+                    </div>
+                    <div class="use-case-content">
+                        <div class="demo-info">
+                            <h4>Estado:</h4>
+                            <p>Las demostraciones AXD están siendo preparadas y estarán disponibles próximamente.</p>
+                            
+                            <h4>Contenido Planificado:</h4>
+                            <p>• Scripts personalizados</p>
+                            <p>• Casos de uso específicos</p>
+                            <p>• Soluciones innovadoras</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conectividad View -->
+        <div id="conectividad-view" class="view">
+            <button class="back-button" onclick="goHome()">← Volver al Inicio</button>
+            
+            <div class="page-title">
+                <h1>Línea de Conectividad</h1>
+                <p>Próximamente: Soluciones de conexión e integración</p>
+            </div>
+
+            <div class="demo-use-cases">
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        🚧 En Desarrollo
+                    </div>
+                    <div class="use-case-content">
+                        <div class="demo-info">
+                            <h4>Estado:</h4>
+                            <p>Las demostraciones de conectividad están siendo preparadas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Servicios View -->
+        <div id="servicios-view" class="view">
+            <button class="back-button" onclick="goHome()">← Volver al Inicio</button>
+            
+            <div class="page-title">
+                <h1>Línea de Servicios</h1>
+                <p>Próximamente: Servicios adicionales y soluciones complementarias</p>
+            </div>
+
+            <div class="demo-use-cases">
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        🚧 En Desarrollo
+                    </div>
+                    <div class="use-case-content">
+                        <div class="demo-info">
+                            <h4>Estado:</h4>
+                            <p>Las demostraciones de servicios están siendo preparadas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Navigation State Management
+        let currentView = 'home';
+        let navigationHistory = [];
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            showView('home');
+            updateBreadcrumb();
+        });
+
+        // View Management Functions
+        function showView(viewName) {
+            // Hide all views
+            const views = document.querySelectorAll('.view');
+            views.forEach(view => {
+                view.classList.remove('active');
+                view.style.display = 'none';
+            });
+
+            // Show selected view
+            const targetView = document.getElementById(viewName + '-view');
+            if (targetView) {
+                targetView.style.display = 'block';
+                targetView.classList.add('active', 'fade-in');
+                currentView = viewName;
+                updateBreadcrumb();
+            }
+        }
+
+        // Navigation Functions
+        function selectLine(line) {
+            navigationHistory.push(currentView);
+            showView(line);
+        }
+
+        function selectCategory(category) {
+            navigationHistory.push(currentView);
+            showView(category);
+        }
+
+        function selectRedSaphireCategory(category) {
+            navigationHistory.push(currentView);
+            showView('redsaphire-' + category);
+        }
+
+        function goHome() {
+            navigationHistory = [];
+            showView('home');
+        }
+
+        function goToExperiencia() {
+            showView('experiencia');
+        }
+
+        function goToRedSaphire() {
+            showView('redsaphire');
+        }
+
+        function goBack() {
+            if (navigationHistory.length > 0) {
+                const previousView = navigationHistory.pop();
+                showView(previousView);
+            } else {
+                goHome();
+            }
+        }
+
+        // Breadcrumb Management
+        function updateBreadcrumb() {
+            const breadcrumbContent = document.getElementById('breadcrumb-content');
+            let breadcrumbText = '';
+
+            switch(currentView) {
+                case 'home':
+                    breadcrumbText = '';
+                    break;
+                case 'experiencia':
+                    breadcrumbText = ' > <span class="breadcrumb-item">Experiencia</span>';
+                    break;
+                case 'redsaphire':
+                    breadcrumbText = ' > <span class="breadcrumb-item" onclick="goToExperiencia()">Experiencia</span> > <span class="breadcrumb-item">RedSaphire</span>';
+                    break;
+                case 'redsaphire-voz':
+                    breadcrumbText = ' > <span class="breadcrumb-item" onclick="goToExperiencia()">Experiencia</span> > <span class="breadcrumb-item" onclick="goToRedSaphire()">RedSaphire</span> > <span class="breadcrumb-item">Voz</span>';
+                    break;
+                case 'redsaphire-chat':
+                    breadcrumbText = ' > <span class="breadcrumb-item" onclick="goToExperiencia()">Experiencia</span> > <span class="breadcrumb-item" onclick="goToRedSaphire()">RedSaphire</span> > <span class="breadcrumb-item">Chat</span>';
+                    break;
+                case 'axd':
+                    breadcrumbText = ' > <span class="breadcrumb-item" onclick="goToExperiencia()">Experiencia</span> > <span class="breadcrumb-item">AXD</span>';
+                    break;
+                case 'conectividad':
+                    breadcrumbText = ' > <span class="breadcrumb-item">Conectividad</span>';
+                    break;
+                case 'servicios':
+                    breadcrumbText = ' > <span class="breadcrumb-item">Servicios</span>';
+                    break;
+            }
+
+            breadcrumbContent.innerHTML = breadcrumbText;
+        }
+
+        // Utility Functions
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                // You could add a toast notification here
+                console.log('Copied to clipboard: ' + text);
+            });
+        }
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                goBack();
+            }
+        });
+
+        // Mobile Menu Toggle (if needed in future)
+        function toggleMobileMenu() {
+            // Implementation for mobile menu if needed
+        }
+
+        // Search Functionality (for future implementation)
+        function searchDemos(query) {
+            // Implementation for search functionality
+        }
+
+        // Analytics/Tracking (placeholder for future implementation)
+        function trackDemoAccess(demoType, useCase) {
+            console.log(`Demo accessed: ${demoType} - ${useCase}`);
+        }
+
+        // Future: Add demo completion tracking
+        function markDemoComplete(demoId) {
+            // Implementation for tracking demo completion
+        }
+
+        // Future: Add favorites functionality
+        function toggleFavorite(demoId) {
+            // Implementation for favorite demos
+        }
+
+        // Future: Add notes functionality
+        function addNote(demoId, note) {
+            // Implementation for adding notes to demos
+        }
+
+        // Performance optimization: Lazy load views
+        function lazyLoadView(viewName) {
+            // Implementation for lazy loading of view content
+        }
+
+        // Export functionality for demo scripts
+        function exportDemoScript(demoType) {
+            // Implementation for exporting demo scripts
+        }
+
+        // Print functionality
+        function printDemoScript(demoType) {
+            // Implementation for printing demo scripts
+        }
+    </script>
 </body>
 </html>

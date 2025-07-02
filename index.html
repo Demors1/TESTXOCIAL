@@ -1,111 +1,13 @@
-<!DOCTYPE html>
-<html lang="es">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Ficha del Paciente</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-image: url('https://iphoneros.com/wp-content/uploads/2015/02/azul_abstracto_ordenador_iphoneroscom.jpg');
-      background-size: cover;
-      background-position: center;
-      font-family: Arial, sans-serif;
-      color: #fff;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .form-container {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 30px 40px;
-      border-radius: 15px;
-      width: 400px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    .form-group label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 5px;
-      color: #ffffff;
-    }
-
-    .form-group .value {
-      background-color: #ffffff10;
-      padding: 10px;
-      border-radius: 5px;
-      color: #ffffff;
-    }
-
-    .center-field {
-      margin: 30px 0;
-      border: 2px solid #ffffff33;
-      padding: 15px;
-      text-align: center;
-      background-color: #ffffff15;
-      font-size: 1.2em;
-      font-weight: bold;
-      border-radius: 8px;
-    }
-  </style>
+    <!--  our web component script  -->
+    <script src="main.js" type="text/javascript" defer></script>
+	
+    <title>Widget K</title>
 </head>
-<body>
-  <div class="form-container">
-    <div class="form-group">
-      <label>👨‍⚕️Paciente:</label>
-      <div class="value">Kevin Steven Olivera Caicedo</div>
-    </div>
-
-    <div class="form-group">
-      <label>📧 Email:</label>
-      <div class="value">kevin.olivera@axede.com.co</div>
-    </div>
-
-    <div class="form-group">
-      <label>🆔 ID:</label>
-      <div class="value">1012462680</div>
-    </div>
-
-    <div class="form-group">
-      <label>📱 TEL+:</label>
-      <div class="value">3045501347</div>
-    </div>
-
-    <div class="center-field">
-      🏥 EPS: Sanitas
-    </div>
-
-    <div class="form-group">
-      <label>👶 Tipo de paciente:</label>
-      <div class="value">HUN</div>
-    </div>
-
-    <div class="form-group">
-      <label>🔩 Orden:</label>
-      <div class="value">15478</div>
-    </div>
-
-    <div class="form-group">
-      <label>Categoría:</label>
-      <div class="value">Consulta</div>
-    </div>
-
-    <div class="form-group">
-      <label>Especialidad:</label>
-      <div class="value">Cardiología</div>
-    </div>
-
-    <div class="form-group">
-      <label>Fecha:</label>
-      <div class="value">04/11/2025 10:30 am</div>
-    </div>
-  </div>
+<body style="background-color: black;">
+<!--  our custom tag  -->
+<axede-chat-box></axede-chat-box>
 </body>
 </html>

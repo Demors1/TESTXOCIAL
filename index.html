@@ -1,306 +1,80 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración de Widgets</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f4f7f9;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-        .container {
-            width: 100%;
-            max-width: 700px;
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        }
-        h1, h2 {
-            color: #1a202c;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 10px;
-            margin-top: 0;
-        }
-        h2 {
-            font-size: 1.2em;
-            margin-top: 25px;
-        }
-        .data-display {
-            background-color: #2d3748;
-            color: #f7fafc;
-            padding: 20px;
-            border-radius: 8px;
-            font-family: monospace;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            font-size: 0.9em;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #4a5568;
-        }
-        input[type="text"],
-        input[type="number"],
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #cbd5e0;
-            border-radius: 6px;
-            box-sizing: border-box;
-            transition: border-color 0.2s;
-            font-size: 1em;
-        }
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #4299e1;
-            box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5);
-        }
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-        .button-container {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
-        }
-        button {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 6px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-        }
-        button:active {
-            transform: scale(0.98);
-        }
-        #update-btn {
-            background-color: #4299e1;
-            color: white;
-            flex-grow: 1;
-        }
-        #update-btn:hover {
-            background-color: #2b6cb0;
-        }
-        #refresh-btn {
-            background-color: #e2e8f0;
-            color: #4a5568;
-        }
-        #refresh-btn:hover {
-            background-color: #cbd5e0;
-        }
-        #status-message {
-            margin-top: 20px;
-            padding: 12px;
-            border-radius: 6px;
-            text-align: center;
-            font-weight: 500;
-            display: none; /* Oculto por defecto */
-        }
-        .status-success {
-            background-color: #c6f6d5;
-            color: #2f855a;
-        }
-        .status-error {
-            background-color: #fed7d7;
-            color: #c53030;
-        }
-        .status-loading {
-            background-color: #bee3f8;
-            color: #2b6cb0;
-        }
-    </style>
+<meta charset="UTF--8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo Widget Dinámico</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+    body {
+      margin: 0;
+      /* Se establece un fondo inicial por si la API tarda en responder */
+      background-color: #f0f0f0; 
+      background-size: 100% auto;
+      background-repeat: no-repeat;
+      background-position: center top;
+      background-attachment: scroll;
+      /* La altura se ajustará dinámicamente si es necesario, 
+         pero puedes mantenerla si tu diseño lo requiere. */
+      height: 3751px; 
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Panel de Administración</h1>
+<div id="demo-chat-widget"></div>
 
-    <section>
-        <h2>Datos Actuales del Widget</h2>
-        <div id="current-data-container" class="data-display">Cargando datos...</div>
-    </section>
-
-    <hr style="border: none; height: 1px; background-color: #e2e8f0; margin: 30px 0;">
-
-    <section>
-        <h2>Actualizar Configuración</h2>
-        <form id="update-form">
-            <div class="form-group">
-                <label for="widget-id">ID del Registro a Actualizar</label>
-                <input type="number" id="widget-id" placeholder="Ej: 1" required>
-            </div>
-            <div class="form-group">
-                <label for="widget-url">URL de la Imagen</label>
-                <input type="text" id="widget-url" placeholder="https://ejemplo.com/imagen.png">
-            </div>
-            <div class="form-group">
-                <label for="widget-chat-id">ID del Chat</label>
-                <input type="text" id="widget-chat-id" placeholder="f888e6a0-05bd-42b3-86d9-30893ca58dd4">
-            </div>
-            <div class="form-group">
-                <label for="widget-message">Mensaje de Bienvenida</label>
-                <textarea id="widget-message" placeholder="Escribe el mensaje inicial aquí..."></textarea>
-            </div>
-            <div class="button-container">
-                <button type="button" id="refresh-btn">Refrescar Datos</button>
-                <button type="submit" id="update-btn">Actualizar en Base de Datos</button>
-            </div>
-        </form>
-    </section>
-    
-    <div id="status-message"></div>
-</div>
+<script src="https://mindxworkpre.app/web-chat-dist/pre-chat-widget.iife.js"></script>
 
 <script>
-    // --- 1. Configuración y Referencias a Elementos ---
-    const API_URL = 'https://xgovbgfbexqwouzhvseh.supabase.co/rest/v1/MindX_Widgets';
-    const API_KEY = 'sb_publishable_tFfX2UApvpqXGuXKDPpsVg_06rHlP48';
+    // Nos aseguramos de que el DOM esté completamente cargado antes de ejecutar el script
+    document.addEventListener('DOMContentLoaded', function() {
 
-    // Referencias a los elementos del DOM
-    const dataContainer = document.getElementById('current-data-container');
-    const updateForm = document.getElementById('update-form');
-    const statusMessage = document.getElementById('status-message');
-    const refreshBtn = document.getElementById('refresh-btn');
+        // --- 1. Definimos los datos para la consulta a la API ---
+        const apiUrl = 'https://xgovbgfbexqwouzhvseh.supabase.co/rest/v1/MindX_Widgets?select=*';
+        const apiKey = 'sb_publishable_tFfX2UApvpqXGuXKDPpsVg_06rHlP48';
 
-    // Referencias a los campos del formulario
-    const widgetIdInput = document.getElementById('widget-id');
-    const widgetUrlInput = document.getElementById('widget-url');
-    const widgetChatIdInput = document.getElementById('widget-chat-id');
-    const widgetMessageInput = document.getElementById('widget-message');
-
-    // --- 2. Funciones para interactuar con la API ---
-
-    /**
-     * Muestra mensajes de estado al usuario (cargando, éxito, error).
-     */
-    function showStatus(message, type = 'loading') {
-        statusMessage.textContent = message;
-        statusMessage.className = `status-${type}`;
-        statusMessage.style.display = 'block';
-    }
-
-    /**
-     * Obtiene los datos actuales de la API y los muestra en la página.
-     * También rellena el formulario con los datos del primer registro encontrado.
-     */
-    async function fetchAndDisplayData() {
-        showStatus('Cargando datos...', 'loading');
-        try {
-            const response = await fetch(`${API_URL}?select=*`, {
-                method: 'GET',
-                headers: {
-                    'apikey': API_KEY,
-                    'Authorization': `Bearer ${API_KEY}`
-                }
-            });
-
-            if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-
-            const data = await response.json();
-            
-            // Muestra los datos en formato JSON en el contenedor
-            dataContainer.textContent = JSON.stringify(data, null, 2);
-
-            // Rellena el formulario con los datos del primer registro para facilitar la edición
-            if (data && data.length > 0) {
-                const firstRecord = data[0];
-                widgetIdInput.value = firstRecord.id;
-                widgetUrlInput.value = firstRecord.URL_Imagen || '';
-                widgetChatIdInput.value = firstRecord.ID_Chat || '';
-                widgetMessageInput.value = firstRecord.Mensaje || '';
+        // --- 2. Realizamos la llamada a la API con fetch ---
+        fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'apikey': apiKey,
+                'Authorization': 'Bearer ' + apiKey
             }
-            
-            statusMessage.style.display = 'none'; // Oculta el mensaje si todo va bien
-
-        } catch (error) {
-            console.error('Error al obtener los datos:', error);
-            dataContainer.textContent = 'Error al cargar los datos. Revisa la consola para más detalles.';
-            showStatus(`Error al obtener datos: ${error.message}`, 'error');
-        }
-    }
-
-    /**
-     * Maneja el envío del formulario para actualizar los datos.
-     */
-    async function handleUpdate(event) {
-        event.preventDefault(); // Evita que la página se recargue
-
-        const widgetId = widgetIdInput.value;
-        if (!widgetId) {
-            showStatus('El campo "ID del Registro a Actualizar" es obligatorio.', 'error');
-            return;
-        }
-
-        showStatus('Actualizando...', 'loading');
-
-        // Construye el objeto solo con los campos que el usuario completó
-        const dataToUpdate = {};
-        if (widgetUrlInput.value) dataToUpdate.URL_Imagen = widgetUrlInput.value;
-        if (widgetChatIdInput.value) dataToUpdate.ID_Chat = widgetChatIdInput.value;
-        if (widgetMessageInput.value) dataToUpdate.Mensaje = widgetMessageInput.value;
-
-        if (Object.keys(dataToUpdate).length === 0) {
-            showStatus('No hay campos para actualizar. Por favor, rellena al menos un campo.', 'error');
-            return;
-        }
-
-        try {
-            const response = await fetch(`${API_URL}?id=eq.${widgetId}`, {
-                method: 'PATCH',
-                headers: {
-                    'apikey': API_KEY,
-                    'Authorization': `Bearer ${API_KEY}`,
-                    'Content-Type': 'application/json',
-                    'Prefer': 'return=minimal'
-                },
-                body: JSON.stringify(dataToUpdate)
-            });
-
+        })
+        .then(response => {
+            // Verificamos si la respuesta es exitosa
             if (!response.ok) {
-                throw new Error(`Error HTTP: ${response.status} - ${response.statusText}`);
+                throw new Error('Error en la respuesta de la red: ' + response.statusText);
             }
+            return response.json(); // Convertimos la respuesta a JSON
+        })
+        .then(data => {
+            // --- 3. Usamos los datos de la API para configurar la página ---
+            if (data && data.length > 0) {
+                const widgetConfig = data[0]; // Tomamos el primer elemento del array
 
-            showStatus('¡Datos actualizados con éxito!', 'success');
-            // Recargamos los datos para ver los cambios reflejados
-            await fetchAndDisplayData();
+                // a) Actualizamos la imagen de fondo del body
+                document.body.style.backgroundImage = `url('${widgetConfig.URL_Imagen}')`;
 
-        } catch (error) {
-            console.error('Error al actualizar los datos:', error);
-            showStatus(`Error al actualizar: ${error.message}`, 'error');
-        }
-    }
+                // b) Renderizamos el Widget con los datos dinámicos
+                window.ChatWidget.render({
+                    id: 'demo-chat-widget',
+                    widgetId: widgetConfig.ID_Chat, // ID desde la API
+                    content: 'widget',
+                    initialMessage: widgetConfig.Mensaje // Mensaje desde la API
+                });
 
-
-    // --- 3. Event Listeners ---
-    
-    // Carga los datos iniciales cuando la página esté lista
-    document.addEventListener('DOMContentLoaded', fetchAndDisplayData);
-
-    // Asigna la función de actualización al evento 'submit' del formulario
-    updateForm.addEventListener('submit', handleUpdate);
-    
-    // Asigna la función de refrescar al botón correspondiente
-    refreshBtn.addEventListener('click', fetchAndDisplayData);
-
+            } else {
+                console.error('No se recibieron datos de la API o el formato es incorrecto.');
+            }
+        })
+        .catch(error => {
+            // --- 4. Manejamos cualquier error que ocurra ---
+            console.error('Hubo un problema con la operación de fetch:', error);
+            // Opcional: Podrías mostrar un mensaje de error al usuario aquí
+        });
+    });
 </script>
 
 </body>

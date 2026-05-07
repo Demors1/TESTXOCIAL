@@ -22,60 +22,18 @@
 </head>
 <body>
 
-<div id="demo-chat-widget"></div>
+<div id="mindx-widget-21e84575"></div>
 
 <script src="https://mindx.work/embed-chat/chat-widget.v1.0.1.iife.js"></script>
 
 <script>
-    // Nos aseguramos de que el DOM esté completamente cargado antes de ejecutar el script
-    document.addEventListener('DOMContentLoaded', function() {
-
-        // --- 1. Definimos los datos para la consulta a la API ---
-        const apiUrl = 'https://xgovbgfbexqwouzhvseh.supabase.co/rest/v1/MindX_Widgets?select=*';
-        const apiKey = 'sb_publishable_tFfX2UApvpqXGuXKDPpsVg_06rHlP48';
-
-        // --- 2. Realizamos la llamada a la API con fetch ---
-        fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                'apikey': apiKey,
-                'Authorization': 'Bearer ' + apiKey
-            }
-        })
-        .then(response => {
-            // Verificamos si la respuesta es exitosa
-            if (!response.ok) {
-                throw new Error('Error en la respuesta de la red: ' + response.statusText);
-            }
-            return response.json(); // Convertimos la respuesta a JSON
-        })
-        .then(data => {
-            // --- 3. Usamos los datos de la API para configurar la página ---
-            if (data && data.length > 0) {
-                const widgetConfig = data[0]; // Tomamos el primer elemento del array
-
-                // a) Actualizamos la imagen de fondo del body
-                document.body.style.backgroundImage = `url('${widgetConfig.URL_Imagen}')`;
-
-                // b) Renderizamos el Widget con los datos dinámicos
-                window.ChatWidget.render({
-                    id: 'demo-chat-widget',
-                    widgetId: widgetConfig.ID_Chat, // ID desde la API
-                    content: 'widget',
-                    initialMessage: widgetConfig.Mensaje // Mensaje desde la API
-                });
-
-            } else {
-                console.error('No se recibieron datos de la API o el formato es incorrecto.');
-            }
-        })
-        .catch(error => {
-            // --- 4. Manejamos cualquier error que ocurra ---
-            console.error('Hubo un problema con la operación de fetch:', error);
-            // Opcional: Podrías mostrar un mensaje de error al usuario aquí
-        });
-    });
+  window.MindxChatWidget.render({
+    id: 'mindx-widget-21e84575',
+    widgetId: '21e84575-ec69-421c-8c5e-95f32ca9bdce',
+    content: 'widget',
+    initialMessage: '👋 ¡Hola! Bienvenido al canal de atención.',
+    isOpen: false
+  });
 </script>
-
 </body>
 </html>

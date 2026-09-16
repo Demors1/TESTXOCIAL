@@ -1,40 +1,150 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF--8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Demo Widget Dinámico</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-<style>
-    body {
-      margin: 0;
-      /* Se establece un fondo inicial por si la API tarda en responder */
-      background-color: #f0f0f0; 
-      background-size: 100% auto;
-      background-repeat: no-repeat;
-      background-position: center top;
-      background-attachment: scroll;
-      /* La altura se ajustará dinámicamente si es necesario, 
-         pero puedes mantenerla si tu diseño lo requiere. */
-      height: 3751px; 
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Demo - Canal de Atención</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            background: #f5f5f5;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /*
+         * Contenedor principal de la página
+         */
+        .demo-page {
+            width: 100%;
+            min-height: 100vh;
+            background: white;
+        }
+
+        /*
+         * Imagen que simula ser el contenido completo
+         * de la página web.
+         */
+        .page-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 0;
+            padding: 0;
+        }
+
+        /*
+         * Opcional: pequeño encabezado superior
+         * Puedes eliminarlo si quieres que la imagen
+         * empiece desde el primer pixel de la pantalla.
+         */
+        .demo-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+
+            font-size: 14px;
+            z-index: 1000;
+
+            pointer-events: none;
+        }
+
+        /*
+         * Evita que el contenido quede oculto
+         * detrás del header.
+         */
+        .image-container {
+            width: 100%;
+            padding-top: 50px;
+        }
+
+        /*
+         * Responsive
+         */
+        @media (max-width: 768px) {
+
+            .demo-header {
+                height: 45px;
+                font-size: 12px;
+            }
+
+            .image-container {
+                padding-top: 45px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<div id="mindx-widget-52e5d1e3"></div>
+    <!--
+        ENCABEZADO DE DEMOSTRACIÓN
+    -->
+    <div class="demo-header">
+        DEMOSTRACIÓN — CANAL DE ATENCIÓN
+    </div>
 
-<script src="https://mindx.work/embed-chat/chat-widget.v1.0.1.iife.js"></script>
 
-<script>
-  window.MindxChatWidget.render({
-    id: 'mindx-widget-52e5d1e3',
-    widgetId: '52e5d1e3-cbb6-45cb-8d10-a3720fbca074',
-    content: 'widget',
-    initialMessage: '👋 ¡Hola! Bienvenido al canal de atención.',
-    isOpen: false
-  });
-</script>
-    
+    <!--
+        CONTENIDO DE LA PÁGINA
+    -->
+    <main class="demo-page">
+
+        <div class="image-container">
+
+            <!--
+                CAMBIA ESTA URL POR LA URL DE TU IMAGEN
+            -->
+            <img
+                class="page-image"
+                src="https://TU-URL-DE-LA-IMAGEN.com/imagen.png"
+                alt="Contenido de demostración"
+            >
+
+        </div>
+
+    </main>
+
+
+    <!--
+        ============================
+        MINDX CHAT WIDGET
+        ============================
+    -->
+
+    <div id="mindx-widget-52e5d1e3"></div>
+
+    <script src="https://mindx.work/embed-chat/chat-widget.v1.0.1.iife.js"></script>
+
+    <script>
+        window.MindxChatWidget.render({
+            id: 'mindx-widget-52e5d1e3',
+            widgetId: '52e5d1e3-cbb6-45cb-8d10-a3720fbca074',
+            content: 'widget',
+            initialMessage: '👋 ¡Hola! Bienvenido al canal de atención.',
+            isOpen: false
+        });
+    </script>
+
 </body>
 </html>
+```
